@@ -20,7 +20,26 @@ use std::path::{Path, PathBuf};
 use std::ffi::OsStr;
 use std::env;
 
+use tuf;
+use tuf::client::{Client as TufClient, PathTranslator};
+use tuf::interchange::Json;
+use tuf::metadata::{TargetPath, VirtualTargetPath};
+use tuf::repository::{FileSystemRepository, HttpRepository};
 use url::Url;
+
+pub struct RustupPathTranslator {}
+
+impl PathTranslator for RustupPathTranslator {
+    fn real_to_virtual(&self, path: &TargetPath) -> ::std::result::Result<VirtualTargetPath, tuf::error::Error> {
+        let desc = ToolchainDesc::from_str(path.value())
+            .map_err(|e| tuf::error::Error::IllegalArgument(format!("Could not parse into toolchain: {:?}", e)))?;
+        panic!() // TODO
+    }
+
+    fn virtual_to_real(&self, path: &VirtualTargetPath) -> ::std::result::Result<TargetPath, tuf::error::Error> {
+        panic!() // TODO
+    }
+}
 
 /// A fully resolved reference to a toolchain which may or may not exist
 pub struct Toolchain<'a> {
@@ -212,6 +231,19 @@ impl<'a> Toolchain<'a> {
                                                           update_hash.as_ref().map(|p| &**p),
                                                           self.download_cfg()))
     }
+
+    pub fn install_with_tuf(&self, tuf_client: &mut TufClient<Json,
+                                                              FileSystemRepository<Json>,
+                                                              HttpRepository<Json>,
+                                                              RustupPathTranslator>)-> Result<UpdateStatus>
+    {
+        let target = self.desc()?.as_tuf_target(); 
+        let out = vec![];  // TODO replace this with a File
+        tuf_client.fetch_target_to_writer(&target, out)
+            .map(|_| UpdateStatus::Installed) // TODO
+            .map_err(|e| Error::from_kind(ErrorKind::Msg(format!("{:?}", e))))
+    }
+
     pub fn is_custom(&self) -> bool {
         ToolchainDesc::from_str(&self.name).is_err()
     }

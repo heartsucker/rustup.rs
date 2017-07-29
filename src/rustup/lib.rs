@@ -11,6 +11,7 @@ extern crate rustc_serialize;
 extern crate tempfile;
 extern crate time;
 extern crate toml;
+extern crate tuf;
 #[cfg(unix)]
 extern crate libc;
 
@@ -19,6 +20,11 @@ pub use notifications::*;
 pub use config::*;
 pub use toolchain::*;
 pub use rustup_utils::{utils, notify, toml_utils};
+
+/// TUF root key IDs, used for pinning.
+pub const ROOT_KEYS: &'static [&str] = &[
+    "qfrfBrkB4lBBSDEBlZgaTGS_SrE6UfmON9kP4i3dJFY=" // TODO This is a dummy key for testing
+];
 
 mod errors;
 mod notifications;

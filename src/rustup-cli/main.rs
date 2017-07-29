@@ -31,6 +31,9 @@ extern crate tempdir;
 extern crate sha2;
 extern crate markdown;
 extern crate toml;
+extern crate tuf;
+extern crate url;
+extern crate hyper;
 extern crate wait_timeout;
 
 #[cfg(windows)]

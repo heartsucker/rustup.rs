@@ -27,6 +27,7 @@ sha2 = "0.6.0"
 remove_dir_all = "0.2"
 rustup-utils = { path = "../rustup-utils" }
 error-chain = "0.10"
+tuf = "0.3.0-alpha3"
 
 [dev-dependencies]
 rustup-mock = { path = "../rustup-mock" }

@@ -2,6 +2,7 @@ use rustup_dist::{self, temp};
 use rustup_utils;
 use rustup_dist::manifest::Component;
 use toml;
+use tuf;
 
 error_chain! {
     links {
@@ -11,6 +12,7 @@ error_chain! {
 
     foreign_links {
         Temp(temp::Error);
+        Tuf(tuf::error::Error);
     }
 
     errors {

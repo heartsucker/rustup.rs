@@ -12,6 +12,7 @@ extern crate rustup_utils;
 #[macro_use]
 extern crate error_chain;
 extern crate sha2;
+extern crate tuf;
 
 #[cfg(windows)]
 extern crate winapi;

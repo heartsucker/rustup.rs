@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 use std::path::PathBuf;
+use tuf;
 
 use rustup;
 use rustup_dist::{self, temp};
@@ -15,6 +16,7 @@ error_chain! {
 
     foreign_links {
         Temp(temp::Error);
+        Tuf(tuf::Error);
     }
 
     errors {
