@@ -780,6 +780,7 @@ dependencies = [
  "download 0.3.0",
  "error-chain 0.7.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "gcc 0.3.51 (registry+https://github.com/rust-lang/crates.io-index)",
+ "hyper 0.10.12 (registry+https://github.com/rust-lang/crates.io-index)",
  "itertools 0.4.19 (registry+https://github.com/rust-lang/crates.io-index)",
  "kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -799,7 +800,7 @@ dependencies = [
  "term 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.38 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.1.30 (registry+https://github.com/rust-lang/crates.io-index)",
- "tuf 0.2.0 (git+https://github.com/heartsucker/rust-tuf?rev=532e7c5)",
+ "tuf 0.3.0-alpha1 (git+https://github.com/heartsucker/rust-tuf?rev=64b6ae9)",
  "url 1.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "user32-sys 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "wait-timeout 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -824,6 +825,7 @@ dependencies = [
  "tar 0.4.13 (registry+https://github.com/rust-lang/crates.io-index)",
  "tempdir 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.1.30 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tuf 0.3.0-alpha1 (git+https://github.com/heartsucker/rust-tuf?rev=64b6ae9)",
  "url 1.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "user32-sys 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "walkdir 0.1.8 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1157,8 +1159,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "tuf"
-version = "0.2.0"
-source = "git+https://github.com/heartsucker/rust-tuf?rev=532e7c5#532e7c5bb6ad88db97ab6d1fc234f2439b292745"
+version = "0.3.0-alpha1"
+source = "git+https://github.com/heartsucker/rust-tuf?rev=64b6ae9#64b6ae9528ddecd9f01aedc4f5d72acccf993138"
 dependencies = [
  "chrono 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "data-encoding 2.0.0-rc.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1481,7 +1483,7 @@ dependencies = [
 "checksum toml 0.1.30 (registry+https://github.com/rust-lang/crates.io-index)" = "0590d72182e50e879c4da3b11c6488dae18fccb1ae0c7a3eda18e16795844796"
 "checksum traitobject 0.0.1 (registry+https://github.com/rust-lang/crates.io-index)" = "07eaeb7689bb7fca7ce15628319635758eda769fed481ecfe6686ddef2600616"
 "checksum traitobject 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "efd1f82c56340fdf16f2a953d7bda4f8fdffba13d93b00844c25572110b26079"
-"checksum tuf 0.2.0 (git+https://github.com/heartsucker/rust-tuf?rev=532e7c5)" = "<none>"
+"checksum tuf 0.3.0-alpha1 (git+https://github.com/heartsucker/rust-tuf?rev=64b6ae9)" = "<none>"
 "checksum typeable 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)" = "1410f6f91f21d1612654e7cc69193b0334f909dcf2c790c4826254fbb86f8887"
 "checksum typenum 1.9.0 (registry+https://github.com/rust-lang/crates.io-index)" = "13a99dc6780ef33c78780b826cf9d2a78840b72cae9474de4bcaf9051e60ebbd"
 "checksum unicase 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7f4765f83163b74f957c797ad9253caf97f103fb064d3999aea9568d09fc8a33"

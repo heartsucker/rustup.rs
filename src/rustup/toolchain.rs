@@ -20,6 +20,9 @@ use std::path::{Path, PathBuf};
 use std::ffi::OsStr;
 use std::env;
 
+use tuf::client::Client as TufClient;
+use tuf::interchange::Json;
+use tuf::repository::{FileSystemRepository, HttpRepository};
 use url::Url;
 
 /// A fully resolved reference to a toolchain which may or may not exist
@@ -209,6 +212,18 @@ impl<'a> Toolchain<'a> {
                                                           update_hash.as_ref().map(|p| &**p),
                                                           self.download_cfg()))
     }
+
+    pub fn install_with_tuf(&self, tuf_client: &mut TufClient<Json,
+                                                              FileSystemRepository<Json>,
+                                                              HttpRepository<Json>>)-> Result<UpdateStatus>
+    {
+        let target = self.desc()?.as_tuf_target(); 
+        let out = vec![];  // TODO replace this with a File
+        tuf_client.fetch_target_to_writer(&target, out)
+            .map(|_| UpdateStatus::Installed) // TODO
+            .map_err(|e| Error::from_kind(ErrorKind::Msg(format!("{:?}", e))))
+    }
+
     pub fn is_custom(&self) -> bool {
         ToolchainDesc::from_str(&self.name).is_err()
     }

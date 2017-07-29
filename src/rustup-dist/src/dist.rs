@@ -14,6 +14,7 @@ use std::fmt;
 use std::env;
 
 use regex::Regex;
+use tuf::metadata::TargetPath;
 
 pub const DEFAULT_DIST_SERVER: &'static str = "https://static.rust-lang.org";
 
@@ -377,6 +378,13 @@ impl ToolchainDesc {
     pub fn is_tracking(&self) -> bool {
         let channels = ["nightly", "beta", "stable"];
         channels.iter().any(|x| *x == self.channel) && self.date.is_none()
+    }
+
+    pub fn as_tuf_target(&self) -> TargetPath {
+        TargetPath::new(format!("dist/{}/{}", ))
+            // this unwrap is ok, because if we get something incompatible, we have very big
+            // problems with how we were generating metadata / manifests
+            .unwrap()
     }
 }
 

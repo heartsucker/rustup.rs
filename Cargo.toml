@@ -38,7 +38,6 @@ download = { path = "src/download" }
 error-chain = "0.7.1"
 clap = "2.18.0"
 regex = "0.1.41"
-url = "1.1.0"
 term = "0.4.4"
 itertools = "0.4.1"
 time = "0.1.34"
@@ -52,7 +51,9 @@ sha2 = "0.6.0"
 markdown = "0.2"
 toml = "0.1.27"
 wait-timeout = "0.1.5"
-tuf = { git = "https://github.com/heartsucker/rust-tuf", rev = "532e7c5" }
+tuf = { git = "https://github.com/heartsucker/rust-tuf", rev = "64b6ae9" }
+url = "1.4"
+hyper = "0.10"
 
 [target."cfg(windows)".dependencies]
 winapi = "0.2.8"

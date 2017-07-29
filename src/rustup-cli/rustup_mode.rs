@@ -1,6 +1,6 @@
 use clap::{App, Arg, ArgGroup, AppSettings, SubCommand, ArgMatches, Shell};
 use common;
-use rustup::{Cfg, Toolchain, command};
+use rustup::{Cfg, Toolchain, command, ROOT_KEYS};
 use rustup::settings::TelemetryMode;
 use errors::*;
 use rustup_dist::manifest::Component;
@@ -9,8 +9,14 @@ use rustup_utils::utils;
 use self_update;
 use std::path::Path;
 use std::process::Command;
-use std::iter;
+use std::{env, iter};
 use term2;
+use tuf::client::{Config as TufConfig, Client as TufClient};
+use tuf::crypto::KeyId;
+use tuf::interchange::Json;
+use tuf::repository::{FileSystemRepository, HttpRepository};
+use url::Url;
+use hyper::Client as HyperClient;
 use std::io::{self, Write};
 use help::*;
 
@@ -484,14 +490,49 @@ fn default_(cfg: &Cfg, m: &ArgMatches) -> Result<()> {
     Ok(())
 }
 
+fn use_tuf() -> bool {
+    env::var_os("RUSTUP_TUF")
+        .and_then(|x| x.into_string().ok())
+        .and_then(|x| x.parse::<i32>().ok())
+        .unwrap_or(0) == 1
+}
+
 fn update(cfg: &Cfg, m: &ArgMatches) -> Result<()> {
     if let Some(names) = m.values_of("toolchain") {
+        let _use_tuf = use_tuf();
+
+        let mut tuf_client = if _use_tuf {
+            let local = FileSystemRepository::<Json>::new(cfg.rustup_dir.join("tuf"));
+            let remote = HttpRepository::<Json>::new(
+                Url::parse(&cfg.dist_root_url).unwrap(), // TODO unwrap
+                HyperClient::new(),
+                Some(format!("rustup/{}", env!("CARGO_PKG_VERSION"))),
+                Some(vec!["meta".into()]),
+            );
+            let keys = ROOT_KEYS.iter().map(|s| KeyId::from_string(&s).unwrap()).collect::<Vec<KeyId>>();
+            Some(TufClient::with_root_pinned(
+                keys.iter(),
+                TufConfig::default(),
+                local,
+                remote,
+            ).unwrap()) // TODO unwrap
+        } else {
+            None
+        };
+
         for name in names {
             try!(update_bare_triple_check(cfg, name));
             let toolchain = try!(cfg.get_toolchain(name, false));
 
             let status = if !toolchain.is_custom() {
-                Some(try!(toolchain.install_from_dist()))
+                match tuf_client {
+                    Some(ref mut tuf_client) => {
+                        let _ = tuf_client.update_local().unwrap(); // TODO unwrap
+                        let _ = tuf_client.update_remote().unwrap(); // TODO unwrap
+                        Some(toolchain.install_with_tuf(tuf_client)?)
+                    }
+                    None => Some(try!(toolchain.install_from_dist()))
+                }
             } else if !toolchain.exists() {
                 return Err(ErrorKind::ToolchainNotInstalled(toolchain.name().to_string()).into());
             } else {
